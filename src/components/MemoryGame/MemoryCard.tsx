@@ -4,12 +4,18 @@ import { ICard } from '../../pages/MemoryGame'
 interface CardProps {
   card: ICard
   onClick: () => void
+  length: number
 }
 
-export const Card: React.FC<CardProps> = ({ card, onClick }) => {
+export const Card: React.FC<CardProps> = ({ card, onClick, length }) => {
+  const width =
+    length < 4 ? 'md:w-[250px]' : length < 9 ? 'md:w-[180px]' : 'md:w-[150px]'
+  const height =
+    length < 4 ? 'md:h-[250px]' : length < 9 ? 'md:h-[180px]' : 'md:h-[150px]'
+
   return (
     <div
-      className={`w-[130px] h-[130px] ${card.isMatched ? '' : 'cursor-pointer'} perspective-1000`}
+      className={`w-[95px] h-[95px] ${width} ${height} ${card.isMatched ? '' : 'cursor-pointer'} perspective-1000`}
       onClick={!card.isMatched ? onClick : undefined} // Disable click on matched cards
     >
       {/* Flip Container (Controls flipping) */}
@@ -28,8 +34,12 @@ export const Card: React.FC<CardProps> = ({ card, onClick }) => {
         </div>
 
         {/* Back Side - Green Card with '?' */}
-        <div className="absolute w-full h-full bg-gradient-card shadow-md flex items-center justify-center rounded-lg backface-hidden">
-          <p className="text-white font-bold text-xl">🚀</p>
+        <div className="absolute w-full h-full shadow-md flex items-center justify-center rounded-lg backface-hidden">
+          <img
+            src="/cards/face-down.jpeg"
+            alt="face-down"
+            className="w-full h-full object-cover rounded-lg"
+          />
         </div>
       </div>
     </div>

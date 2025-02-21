@@ -18,8 +18,82 @@
   backface-visibility: hidden;
 }
 
-.bg-gradient-card {
-  background: linear-gradient(to right, #43cea2, #185a9d);
+.game-bg {
+  background:
+    linear-gradient(#131219, #131219) padding-box,
+    linear-gradient(var(--angle), #070707, #687aff) border-box;
+}
+
+.border-effect {
+  border: 2px solid #0000;
+  border-radius: 12px;
+  background:
+    linear-gradient(#131219, #131219) padding-box,
+    linear-gradient(var(--angle), #070707, #687aff) border-box;
+  animation: 8s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.custom-button {
+  border: none;
+  padding: 8px 12px;
+  outline: none;
+  color: white;
+  font-weight: 500;
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  background: none;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.45);
+  &:before,
+  &:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 10em;
+    transform: translateX(-50%) translateY(-50%);
+    width: 105%;
+    height: 105%;
+    content: '';
+    z-index: -2;
+    background-size: 400% 400%;
+    background: linear-gradient(
+      80deg,
+      #a166ab,
+      #5073b8,
+      #1098ad,
+      #07b39b,
+      #6fba82
+    );
+  }
+  &:before {
+    filter: blur(3px);
+    transition: all 0.25s ease;
+    animation: pulse 10s infinite ease;
+  }
+  &:after {
+    filter: blur(0.1px);
+  }
+  &:hover {
+    &:before {
+      width: 108%;
+      height: 108%;
+    }
+    font-weight: 600;
+  }
 }
 
 .pyro > .before,

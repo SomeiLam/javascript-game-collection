@@ -5,7 +5,7 @@ import {
   Sword,
   Dices,
 } from 'lucide-react'
-import GameCard from '../components/MemoryGame/GameCard'
+import GameCard from '../components/GameCard'
 
 function Home() {
   const navigate = useNavigate()
@@ -13,7 +13,8 @@ function Home() {
   const games = [
     {
       title: 'Memory Game',
-      description: 'Test your memory by matching pairs of cards',
+      description:
+        'Test your memory and explore the world with our vibrant, AI-generated landmark cards, featuring a playful anime style that brings iconic locations to life!',
       icon: <ScanFace className="w-8 h-8" />,
       path: '/memory',
       color: 'from-purple-500 to-pink-500',

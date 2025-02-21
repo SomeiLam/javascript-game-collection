@@ -18,7 +18,7 @@ const GameCard: React.FC<GameCardProps> = ({
 }) => {
   return (
     <div
-      className="group relative overflow-hidden rounded-xl bg-gray-800 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+      className="group relative overflow-hidden rounded-xl bg-gray-800 p-6 hover:border-effect hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
       onClick={onClick}
     >
       <div
