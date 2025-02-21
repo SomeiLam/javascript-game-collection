@@ -185,6 +185,7 @@ const Sudoku = () => {
           )
         )
         setBoard(newBoard)
+        handleFinishgame(newBoard)
       }
     }
   }
