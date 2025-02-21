@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import GameLayout from '../components/GameLayout'
 import { Card } from '../components/MemoryGame/MemoryCard'
-import { Minus, Plus } from 'lucide-react'
 import StartButton from '../components/StartButton'
+import StartGame from '../components/MemoryGame/StartGame'
 
 export interface ICard {
   id: string
@@ -29,7 +29,6 @@ const landmarkCards = [
 
 function MemoryGame() {
   const [gameStarted, setGameStarted] = useState(false)
-  const [counts, setCounts] = useState<number>(landmarkCards.length)
   const [cards, setCards] = useState<ICard[]>([])
   const [flippedCards, setFlippedCards] = useState<number[]>([])
   const [disableClick, setDisableClick] = useState(false)
@@ -111,16 +110,16 @@ function MemoryGame() {
     }, 1000)
   }
 
+  const handleStartGame = (counts: number) => {
+    setGameStarted(true)
+    setCards(shuffleCards(counts))
+  }
+
   useEffect(() => {
     if (flippedCards.length === 2) {
       checkMatch()
     }
   }, [flippedCards])
-
-  useEffect(() => {
-    if (!gameStarted) return
-    setCards(shuffleCards(counts))
-  }, [gameStarted, counts])
 
   useEffect(() => {
     if (cards.length > 0 && cards.every((card) => card.isMatched)) {
@@ -133,7 +132,7 @@ function MemoryGame() {
   const restartGame = () => {
     setGameFinished(false)
     setFlippedCards([])
-    setCards(shuffleCards(counts))
+    setCards([])
     setGameStarted(false)
   }
 
@@ -141,65 +140,10 @@ function MemoryGame() {
     <GameLayout title="Memory Game" gameFinished={gameFinished}>
       <div className="max-w-4xl mx-auto">
         <div
-          className={`bg-gray-800 rounded-lg p-8 ${!gameStarted ? 'border-effect purple-pink' : ''}`}
+          className={`bg-gray-800 rounded-lg p-4 sm:p-8 ${!gameStarted ? 'border-effect purple-pink' : ''}`}
         >
           {!gameStarted ? (
-            <div className="flex flex-col gap-16 justify-center items-center">
-              <div className="flex justify-center items-center flex-col">
-                <h2 className="text-2xl font-bold mb-4">Memory Game</h2>
-                <p className="text-gray-400 max-w-[600px]">
-                  Test your memory and explore the world with our vibrant,
-                  AI-generated landmark cards, featuring a playful anime style
-                  that brings iconic locations to life!
-                </p>
-                <div className="pt-10 flex flex-row gap-5 flex-wrap justify-center">
-                  {[
-                    'pisa',
-                    'golden-gate',
-                    'liberty',
-                    'eiffel-tower',
-                    'face-down',
-                    'mt-fuji',
-                    'taj-mahal',
-                    'machu-picchu',
-                    'colosseum',
-                  ].map((card) => (
-                    <img
-                      src={`cards/${card}.jpeg`}
-                      alt={card}
-                      key={card}
-                      className="w-[200px] rounded-lg shadow-md"
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col gap-5 items-center mb-10">
-                <div className="flex flex-row gap-5 items-center w-full justify-center">
-                  <p className="text-xl">Card pairs</p>
-                  <Minus
-                    onClick={() => counts > 2 && setCounts((prev) => prev - 1)}
-                    className={`${
-                      counts > 2
-                        ? 'text-white cursor-pointer hover:text-[#a166ab]'
-                        : 'text-gray-400'
-                    }`}
-                  />
-                  <p className="text-xl">{counts}</p>
-                  <Plus
-                    onClick={() =>
-                      counts < landmarkCards.length &&
-                      setCounts((prev) => prev + 1)
-                    }
-                    className={`${
-                      counts < landmarkCards.length
-                        ? 'text-white cursor-pointer hover:text-[#a166ab]'
-                        : 'text-gray-400'
-                    }`}
-                  />
-                </div>
-                <StartButton handleStart={() => setGameStarted(true)} />
-              </div>
-            </div>
+            <StartGame handleStartGame={handleStartGame} />
           ) : (
             <div className="flex flex-col gap-10">
               {gameFinished && (
@@ -210,13 +154,13 @@ function MemoryGame() {
                   <StartButton handleStart={restartGame} label="Play Again" />
                 </div>
               )}
-              <div className="flex gap-5 flex-wrap justify-center">
+              <div className="flex gap-3 sm:gap-5 flex-wrap justify-center">
                 {cards.map((card, index) => (
                   <div key={card.id}>
                     <Card
                       card={card}
                       onClick={() => handleCardClick(index)}
-                      length={counts}
+                      length={cards.length / 2}
                     />
                   </div>
                 ))}

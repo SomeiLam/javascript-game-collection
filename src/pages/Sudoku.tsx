@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import GameLayout from '../components/GameLayout'
 import StartGame from '../components/Sudoku/StartGame'
-import { Lightbulb, RotateCcw, SearchX } from 'lucide-react'
+import { Lightbulb, RotateCcw, SearchX, Undo } from 'lucide-react'
 import StartButton from '../components/StartButton'
 
 type Board = number[][]
@@ -190,6 +190,20 @@ const Sudoku = () => {
     }
   }
 
+  const removeNumber = () => {
+    if (selectedCell) {
+      const { row, col } = selectedCell
+      if (originalBoard[row][col] === 0) {
+        const newBoard = board.map((r, rowIndex) =>
+          r.map((cell, colIndex) =>
+            rowIndex === row && colIndex === col ? 0 : cell
+          )
+        )
+        setBoard(newBoard)
+      }
+    }
+  }
+
   const handleFinishgame = (newBoard: Board) => {
     if (checkSolution(newBoard)) {
       setTimeout(() => {
@@ -240,26 +254,38 @@ const Sudoku = () => {
               ) : (
                 <div className="flex gap-3 justify-end mb-5">
                   <button
+                    onClick={removeNumber}
+                    disabled={
+                      !selectedCell ||
+                      (selectedCell &&
+                        board[selectedCell.row][selectedCell.col] === 0)
+                    }
+                    className={`flex items-center gap-2 px-3 sm:px-4 py-2 ${!selectedCell || (selectedCell && board[selectedCell.row][selectedCell.col] === 0) ? 'bg-gray-700 text-gray-600' : 'bg-blue-500 hover:bg-blue-600 transition-colors'}  text-white rounded-lg`}
+                  >
+                    <Undo className="w-5 h-5" />
+                    <p className="hidden md:block">Undo</p>
+                  </button>
+                  <button
                     onClick={findMistake}
                     disabled={!!mistakeCell}
-                    className={`flex items-center gap-2 px-4 py-2 ${mistakeCell ? 'bg-gray-700 text-gray-600' : 'bg-orange-500 hover:bg-orange-600 transition-colors'}  text-white rounded-lg`}
+                    className={`flex items-center gap-2 px-3 sm:px-4 py-2 ${mistakeCell ? 'bg-gray-700 text-gray-600' : 'bg-orange-500 hover:bg-orange-600 transition-colors'}  text-white rounded-lg`}
                   >
                     <SearchX className="w-5 h-5" />
-                    Find Mistake
+                    <p className="hidden md:block">Find Mistake</p>
                   </button>
                   <button
                     onClick={handleHint}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
                   >
                     <Lightbulb className="w-5 h-5" />
-                    Hint
+                    <p className="hidden md:block">Hint</p>
                   </button>
                   <button
                     onClick={restartGame}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
                   >
                     <RotateCcw className="w-5 h-5" />
-                    Restart
+                    <p className="hidden md:block">Restart</p>
                   </button>
                 </div>
               )}
