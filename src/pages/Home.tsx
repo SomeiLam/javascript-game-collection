@@ -9,10 +9,11 @@ function Home() {
     {
       title: 'Memory Game',
       description:
-        'Test your memory and explore the world with our vibrant, AI-generated landmark cards, featuring a playful anime style that brings iconic locations to life!',
+        'Test your memory and explore the world with our vibrant, AI-generated landmark cards.',
       icon: <SquareAsterisk className="w-8 h-8" />,
       path: '/memory',
       color: 'from-purple-500 to-pink-500',
+      effect: 'purple-pink',
     },
     {
       title: 'Sudoku',
@@ -21,6 +22,7 @@ function Home() {
       icon: <Grid3x3 className="w-8 h-8" />,
       path: '/sudoku',
       color: 'from-blue-500 to-cyan-500',
+      effect: 'blue-cyan',
     },
     {
       title: 'Snake Game',
@@ -28,6 +30,7 @@ function Home() {
       icon: <Sword className="w-8 h-8" />,
       path: '/snake',
       color: 'from-green-500 to-emerald-500',
+      effect: 'green-emerald',
     },
     {
       title: '2048',
@@ -35,6 +38,7 @@ function Home() {
       icon: <Dices className="w-8 h-8" />,
       path: '/2048',
       color: 'from-orange-500 to-yellow-500',
+      effect: 'orange-yellow',
     },
   ]
 
@@ -42,7 +46,7 @@ function Home() {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+          <h1 className="title-text text-4xl md:text-6xl font-bold mb-4">
             JavaScript Game Collection
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">

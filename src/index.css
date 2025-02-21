@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+.title-text {
+  font-size: 4rem;
+  color: #fff;
+  /* text-shadow:
+    0 0 5px #ff005e,
+    0 0 10px #ff005e,
+    0 0 20px #ff005e,
+    0 0 40px #ff005e,
+    0 0 80px #ff005e; */
+  animation: glow 10s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow:
+      0 0 5px #ff005e,
+      0 0 10px #ff005e,
+      0 0 20px #ff005e,
+      0 0 40px #ff005e,
+      0 0 80px #ff005e;
+  }
+  33% {
+    text-shadow:
+      0 0 5px #00d4ff,
+      0 0 10px #00d4ff,
+      0 0 20px #00d4ff,
+      0 0 40px #00d4ff,
+      0 0 80px #00d4ff;
+  }
+  66% {
+    text-shadow:
+      0 0 5px #ff005e,
+      0 0 10px #ff005e,
+      0 0 20px #ff005e,
+      0 0 40px #ff005e,
+      0 0 80px #ff005e;
+  }
+  100% {
+    text-shadow:
+      0 0 5px #00d4ff,
+      0 0 10px #00d4ff,
+      0 0 20px #00d4ff,
+      0 0 40px #00d4ff,
+      0 0 80px #00d4ff;
+  }
+}
+
 .perspective-1000 {
   perspective: 1000px;
 }

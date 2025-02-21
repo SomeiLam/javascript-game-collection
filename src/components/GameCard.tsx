@@ -6,6 +6,7 @@ interface GameCardProps {
   icon: React.ReactNode
   path: string
   color: string
+  effect: string
   onClick?: () => void
 }
 
@@ -14,11 +15,12 @@ const GameCard: React.FC<GameCardProps> = ({
   description,
   icon,
   color,
+  effect,
   onClick,
 }) => {
   return (
     <div
-      className="group relative overflow-hidden rounded-xl bg-gray-800 p-6 hover:border-effect hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+      className={`border-effect ${effect} group h-[300px] relative overflow-hidden rounded-xl bg-gray-800 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer`}
       onClick={onClick}
     >
       <div
