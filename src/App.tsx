@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import MemoryGame from './pages/MemoryGame'
-import RockPaperScissors from './pages/RockPaperScissors'
+import Sudoku from './pages/Sudoku'
 import SnakeGame from './pages/SnakeGame'
 import Game2048 from './pages/Game2048'
 
@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/memory" element={<MemoryGame />} />
-        <Route path="/rps" element={<RockPaperScissors />} />
+        <Route path="/sudoku" element={<Sudoku />} />
         <Route path="/snake" element={<SnakeGame />} />
         <Route path="/2048" element={<Game2048 />} />
       </Routes>

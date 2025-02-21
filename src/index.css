@@ -24,6 +24,26 @@
     linear-gradient(var(--angle), #070707, #687aff) border-box;
 }
 
+.cell-effect {
+  transform: scale(1.2);
+  transition: 0.5s;
+  border: 2px solid #9000ff;
+  border-radius: 12px;
+}
+
+.mistake {
+  animation: blink 0.5s infinite alternate;
+}
+
+@keyframes blink {
+  0% {
+    background-color: #ff4000;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 .border-effect {
   border: 2px solid #0000;
   border-radius: 12px;
@@ -31,6 +51,30 @@
     linear-gradient(#131219, #131219) padding-box,
     linear-gradient(var(--angle), #070707, #687aff) border-box;
   animation: 8s rotate linear infinite;
+}
+
+.purple-pink {
+  background:
+    linear-gradient(#131219, #131219) padding-box,
+    linear-gradient(var(--angle), #131219, pink, #131219, #687aff) border-box;
+}
+
+.blue-cyan {
+  background:
+    linear-gradient(#131219, #131219) padding-box,
+    linear-gradient(var(--angle), #131219, blue, #131219, cyan) border-box;
+}
+
+.green-emerald {
+  background:
+    linear-gradient(#131219, #131219) padding-box,
+    linear-gradient(var(--angle), #131219, green, #131219, #00674f) border-box;
+}
+
+.orange-yellow {
+  background:
+    linear-gradient(#131219, #131219) padding-box,
+    linear-gradient(var(--angle), #131219, orange, #131219, yellow) border-box;
 }
 
 @keyframes rotate {

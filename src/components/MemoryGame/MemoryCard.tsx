@@ -9,9 +9,21 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ card, onClick, length }) => {
   const width =
-    length < 4 ? 'md:w-[250px]' : length < 9 ? 'md:w-[180px]' : 'md:w-[150px]'
+    length < 3
+      ? 'md:w-[280px]'
+      : length < 4
+        ? 'md:w-[250px]'
+        : length < 9
+          ? 'md:w-[180px]'
+          : 'md:w-[150px]'
   const height =
-    length < 4 ? 'md:h-[250px]' : length < 9 ? 'md:h-[180px]' : 'md:h-[150px]'
+    length < 3
+      ? 'md:h-[280px]'
+      : length < 4
+        ? 'md:h-[250px]'
+        : length < 9
+          ? 'md:h-[180px]'
+          : 'md:h-[150px]'
 
   return (
     <div

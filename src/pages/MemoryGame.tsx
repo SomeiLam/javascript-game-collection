@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import GameLayout from '../components/GameLayout'
 import { Card } from '../components/MemoryGame/MemoryCard'
 import { Minus, Plus } from 'lucide-react'
+import StartButton from '../components/StartButton'
 
 export interface ICard {
   id: string
@@ -140,7 +141,7 @@ function MemoryGame() {
     <GameLayout title="Memory Game" gameFinished={gameFinished}>
       <div className="max-w-4xl mx-auto">
         <div
-          className={`bg-gray-800 rounded-lg p-8 ${!gameStarted ? 'border-effect' : ''}`}
+          className={`bg-gray-800 rounded-lg p-8 ${!gameStarted ? 'border-effect purple-pink' : ''}`}
         >
           {!gameStarted ? (
             <div className="flex flex-col gap-16 justify-center items-center">
@@ -196,38 +197,30 @@ function MemoryGame() {
                     }`}
                   />
                 </div>
-                <button
-                  className="custom-button py-1 px-4 text-lg rounded"
-                  onClick={() => setGameStarted(true)}
-                >
-                  Start Game
-                </button>
+                <StartButton handleStart={() => setGameStarted(true)} />
               </div>
             </div>
           ) : (
-            <div className="flex gap-5 flex-wrap justify-center">
-              {cards.map((card, index) => (
-                <div key={card.id}>
-                  <Card
-                    card={card}
-                    onClick={() => handleCardClick(index)}
-                    length={counts}
-                  />
-                </div>
-              ))}
+            <div className="flex flex-col gap-10">
               {gameFinished && (
                 <div className="text-center mt-6">
-                  <h2 className="text-2xl font-bold text-[#a166ab]">
+                  <h2 className="text-2xl font-bold text-[#d652ed]">
                     🎉 Congratulations! You finished the game! 🎉
                   </h2>
-                  <button
-                    onClick={restartGame}
-                    className="mt-4 custom-button py-1 px-4 text-lg rounded"
-                  >
-                    Play Again
-                  </button>
+                  <StartButton handleStart={restartGame} label="Play Again" />
                 </div>
               )}
+              <div className="flex gap-5 flex-wrap justify-center">
+                {cards.map((card, index) => (
+                  <div key={card.id}>
+                    <Card
+                      card={card}
+                      onClick={() => handleCardClick(index)}
+                      length={counts}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

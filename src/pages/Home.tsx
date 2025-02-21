@@ -1,10 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import {
-  TowerControl as GameController,
-  ScanFace,
-  Sword,
-  Dices,
-} from 'lucide-react'
+import { Grid3x3, SquareAsterisk, Sword, Dices } from 'lucide-react'
 import GameCard from '../components/GameCard'
 
 function Home() {
@@ -15,15 +10,16 @@ function Home() {
       title: 'Memory Game',
       description:
         'Test your memory and explore the world with our vibrant, AI-generated landmark cards, featuring a playful anime style that brings iconic locations to life!',
-      icon: <ScanFace className="w-8 h-8" />,
+      icon: <SquareAsterisk className="w-8 h-8" />,
       path: '/memory',
       color: 'from-purple-500 to-pink-500',
     },
     {
-      title: 'Rock Paper Scissors',
-      description: 'Classic game of chance against the computer',
-      icon: <GameController className="w-8 h-8" />,
-      path: '/rps',
+      title: 'Sudoku',
+      description:
+        'Get ready to tease your brain and crack the code! Dive in, have fun, and let the numbers dance.',
+      icon: <Grid3x3 className="w-8 h-8" />,
+      path: '/sudoku',
       color: 'from-blue-500 to-cyan-500',
     },
     {
