@@ -27,7 +27,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, length }) => {
 
   return (
     <div
-      className={`w-[95px] h-[95px] ${width} ${height} ${card.isMatched ? '' : 'cursor-pointer'} perspective-1000`}
+      className={`w-[100px] h-[100px] ${width} ${height} ${card.isMatched ? '' : 'cursor-pointer'} perspective-1000`}
       onClick={!card.isMatched ? onClick : undefined} // Disable click on matched cards
     >
       {/* Flip Container (Controls flipping) */}

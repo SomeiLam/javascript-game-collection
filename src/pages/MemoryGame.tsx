@@ -35,28 +35,37 @@ function MemoryGame() {
   const [gameFinished, setGameFinished] = useState(false)
 
   const shuffleCards = (count: number) => {
-    const selectedAnimals = landmarkCards.slice(0, count)
+    // Select a subset of landmark cards
+    const selectedLandmarks = landmarkCards.slice(0, count)
 
-    const shuffled = selectedAnimals
-      .flatMap((animal) => [
-        {
-          id: `${animal}-1`,
-          pairId: `${animal}`,
-          isFlipped: false,
-          isMatched: false,
-          src: `/cards/${animal}.jpeg`,
-        },
-        {
-          id: `${animal}-2`,
-          pairId: `${animal}`,
-          isFlipped: false,
-          isMatched: false,
-          src: `/cards/${animal}.jpeg`,
-        },
-      ])
-      .sort(() => Math.random() - 0.5)
+    // Create pairs and shuffle them deeply
+    const duplicatedCards = selectedLandmarks.flatMap((landmark) => [
+      {
+        id: `${landmark}-1`,
+        pairId: `${landmark}`,
+        isFlipped: false,
+        isMatched: false,
+        src: `/cards/${landmark}.jpeg`,
+      },
+      {
+        id: `${landmark}-2`,
+        pairId: `${landmark}`,
+        isFlipped: false,
+        isMatched: false,
+        src: `/cards/${landmark}.jpeg`,
+      },
+    ])
 
-    return shuffled
+    // Fisher-Yates Shuffle Algorithm for deep shuffling
+    for (let i = duplicatedCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[duplicatedCards[i], duplicatedCards[j]] = [
+        duplicatedCards[j],
+        duplicatedCards[i],
+      ]
+    }
+
+    return duplicatedCards
   }
 
   const handleCardClick = (index: number) => {

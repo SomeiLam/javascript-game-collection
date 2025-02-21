@@ -43,14 +43,16 @@ const StartGame: React.FC<StartGameProps> = ({ handleStartGame }) => {
             'taj-mahal',
             'machu-picchu',
             'colosseum',
-          ].map((card) => (
-            <img
-              src={`cards/${card}.jpeg`}
-              alt={card}
-              key={card}
-              className="w-[70px] sm:w-[200px] rounded-lg shadow-md"
-            />
-          ))}
+          ]
+            .slice(0, window.innerWidth < 640 ? 4 : 9)
+            .map((card) => (
+              <img
+                src={`cards/${card}.jpeg`}
+                alt={card}
+                key={card}
+                className="w-[150px] sm:w-[200px] rounded-lg shadow-md"
+              />
+            ))}
         </div>
       </div>
       <div className="flex flex-col gap-5 items-center mb-10">
