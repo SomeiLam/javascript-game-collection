@@ -765,3 +765,10 @@
     margin-left: 80%;
   }
 }
+
+.snake-grid {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  grid-template-rows: repeat(25, 1fr);
+  gap: 1px;
+}

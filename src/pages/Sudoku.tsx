@@ -3,9 +3,9 @@ import GameLayout from '../components/GameLayout'
 import StartGame from '../components/Sudoku/StartGame'
 import { Lightbulb, RotateCcw, SearchX, Undo } from 'lucide-react'
 import StartButton from '../components/StartButton'
+import { Difficulty } from '../type'
 
 type Board = number[][]
-export type Difficulty = 'easy' | 'medium' | 'hard'
 
 const easyEmptyCells = 30
 const mediumEmptyCells = 40
