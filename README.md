@@ -6,7 +6,7 @@ This project is a collection of four interactive games designed to challenge and
 
 - 🎴 **Memory Game**: Test your memory and explore the world with our vibrant, AI-generated landmark cards.
 - 🔢 **Sudoku**: A classic number puzzle game where you fill a 9x9 grid with numbers 1-9 without repeating any in a row, column, or box.
-- 🐍 **Snake Game** (Upcoming): Guide the snake to eat food and grow longer without colliding with itself.
+- 🐍 **Snake Game** : Guide the snake to eat food and grow longer without colliding with itself.
 - 🎲 **2048** (Upcoming): Slide and combine numbers to reach 2048.
 
 Currently, the **Memory Game** and **Sudoku** are completed and fully playable.

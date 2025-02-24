@@ -106,6 +106,12 @@ function SnakeGame() {
   const handleStartGame = (difficulty: Difficulty) => {
     setDifficulty(difficulty)
     setGameStarted(true)
+    setSnake(boardSize.initialSnake)
+    directionRef.current = { x: 0, y: -1 }
+    setFood(generateFood(snake, []))
+    setGameOver(false)
+    setScore(0)
+    setPoisonFood([])
   }
 
   function generateFood(snake: Position[], poisonFood: Position[]) {
@@ -283,6 +289,10 @@ function SnakeGame() {
                   snake={snake}
                   food={food}
                   poisonFood={poisonFood}
+                  direction={{
+                    x: directionRef.current.x,
+                    y: directionRef.current.y,
+                  }}
                 />
                 {gameOver && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-75 gap-4">
@@ -291,9 +301,6 @@ function SnakeGame() {
                       handleStart={() => {
                         setGameStarted(false)
                         setGameOver(false)
-                        setSnake(boardSize.initialSnake)
-                        directionRef.current = { x: 0, y: -1 }
-                        setFood(generateFood(snake, []))
                       }}
                       label="Restart"
                     />
