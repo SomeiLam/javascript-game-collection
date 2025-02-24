@@ -53,7 +53,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
               key={`${x}-${y}`}
               className={`w-full h-full ${
                 isSnakeHead
-                  ? 'scale-150'
+                  ? 'scale-150 z-10'
                   : isSnake
                     ? 'bg-[#76a32e] rounded-full scale-125 z-0'
                     : 'bg-gray-900'
@@ -63,7 +63,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 <img
                   src="snake/head.png"
                   alt="snake-head"
-                  className={`w-full h-full object-contain z-10 relative ${getRotation()}`}
+                  className={`w-full h-full object-contain relative ${getRotation()}`}
                 />
               ) : isFood ? (
                 <img
