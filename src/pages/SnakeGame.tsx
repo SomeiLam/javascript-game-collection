@@ -3,7 +3,7 @@ import GameLayout from '../components/GameLayout'
 import StartGame from '../components/SnakeGame/StartGame'
 import { Difficulty } from '../type'
 import GameBoard from '../components/SnakeGame/GameBoard'
-// import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
 import StartButton from '../components/StartButton'
 
 const useScreenSize = () => {
@@ -308,7 +308,7 @@ function SnakeGame() {
                 )}
               </div>
               {/* Direction Buttons */}
-              {/* <div className="flex flex-col sm:hidden items-center gap-2">
+              <div className="flex flex-col sm:hidden items-center gap-2">
                 <button
                   onClick={() => (directionRef.current = { x: 0, y: -1 })}
                   className="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-150 hover:shadow-indigo-500/25"
@@ -335,7 +335,7 @@ function SnakeGame() {
                     <ArrowRight className="w-8 h-8" />
                   </button>
                 </div>
-              </div> */}
+              </div>
             </div>
           )}
         </div>

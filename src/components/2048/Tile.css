@@ -1,0 +1,77 @@
+/* The base tile class: generic styling for every tile */
+.tile {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #776e65;
+  /* fallback background if none of the tile-X classes apply */
+  background-color: #cdc1b4;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Each value-based class can override the background (and sometimes text color) */
+.tile-2 {
+  background-color: #eee4da;
+  color: #776e65;
+}
+
+.tile-4 {
+  background-color: #ede0c8;
+  color: #776e65;
+}
+
+.tile-8 {
+  background-color: #f2b179;
+  color: #f9f6f2;
+}
+
+.tile-16 {
+  background-color: #f59563;
+  color: #f9f6f2;
+}
+
+.tile-32 {
+  background-color: #f67c5f;
+  color: #f9f6f2;
+}
+
+.tile-64 {
+  background-color: #f65e3b;
+  color: #f9f6f2;
+}
+
+.tile-128 {
+  background-color: #edcf72;
+  color: #f9f6f2;
+}
+
+.tile-256 {
+  background-color: #edcc61;
+  color: #f9f6f2;
+}
+
+.tile-512 {
+  background-color: #edc850;
+  color: #f9f6f2;
+}
+
+.tile-1024 {
+  background-color: #edc53f;
+  color: #f9f6f2;
+}
+
+.tile-2048 {
+  background-color: #edc22e;
+  color: #f9f6f2;
+}
+
+/* You can define higher tiles if you like, or just reuse .tile-default */
+.tile-default {
+  background-color: #3c3a32;
+  color: #f9f6f2;
+}

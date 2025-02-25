@@ -36,6 +36,7 @@ const StartGame: React.FC<StartGameProps> = ({ handleStartGame }) => {
       <SelectDifficulty
         handleSetDifficulty={handleSetDifficulty}
         difficulty={difficulty}
+        type="level"
       />
       <StartButton handleStart={() => handleStartGame(difficulty)} />
     </div>
