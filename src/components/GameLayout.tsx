@@ -19,7 +19,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
 
   return (
     <div
-      className={`${noScroll ? 'overflow-hidden' : ''} h-full bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+      className={`${noScroll ? 'max-h-dvh overflow-hidden' : 'h-full'} bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
     >
       <div className="before" />
       <div className="after" />

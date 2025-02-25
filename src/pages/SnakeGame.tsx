@@ -295,7 +295,7 @@ function SnakeGame() {
                   }}
                 />
                 {gameOver && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-75 gap-4">
+                  <div className="absolute z-20 inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-75 gap-4">
                     <h1 className="text-4xl font-bold text-white">GAME OVER</h1>
                     <StartButton
                       handleStart={() => {
