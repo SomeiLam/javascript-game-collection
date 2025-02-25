@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Home } from 'lucide-react'
 
@@ -47,6 +47,18 @@ const GameLayout: React.FC<GameLayoutProps> = ({
   noScroll,
 }) => {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (noScroll) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [noScroll])
 
   return (
     <div
