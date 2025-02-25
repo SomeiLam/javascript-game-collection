@@ -266,7 +266,7 @@ function SnakeGame() {
     <GameLayout title="Snake Game" noScroll={gameStarted}>
       <div className="max-w-4xl mx-auto">
         <div
-          className={`bg-gray-800 rounded-lg py-4 sm:p-8 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
+          className={`bg-gray-800 rounded-lg px-8 pt-4 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
         >
           {!gameStarted ? (
             <StartGame handleStartGame={handleStartGame} />

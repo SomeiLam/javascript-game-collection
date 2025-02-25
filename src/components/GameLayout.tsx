@@ -9,6 +9,37 @@ interface GameLayoutProps {
   noScroll?: boolean
 }
 
+// const GameLayout: React.FC<GameLayoutProps> = ({
+//   children,
+//   title,
+//   gameFinished,
+//   noScroll,
+// }) => {
+//   const navigate = useNavigate()
+
+//   return (
+//     <div
+//       className={`${noScroll ? 'max-h-dvh overflow-hidden' : 'h-full'} bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+//     >
+//       <div className="before" />
+//       <div className="after" />
+//       <nav className="bg-gray-800 shadow-lg">
+//         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+//           <h1 className="text-xl font-bold">{title}</h1>
+//           <button
+//             onClick={() => navigate('/')}
+//             className="p-2 hover:bg-gray-700 rounded-lg transition-colors duration-200 flex items-center gap-2"
+//           >
+//             <Home className="w-5 h-5" />
+//             <span>Home</span>
+//           </button>
+//         </div>
+//       </nav>
+//       <main className="container mx-auto px-4 py-8">{children}</main>
+//     </div>
+//   )
+// }
+
 const GameLayout: React.FC<GameLayoutProps> = ({
   children,
   title,
@@ -19,11 +50,12 @@ const GameLayout: React.FC<GameLayoutProps> = ({
 
   return (
     <div
-      className={`${noScroll ? 'max-h-dvh overflow-hidden' : 'h-full'} bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+      className={`bg-gray-900 text-white ${gameFinished ? 'pyro' : ''} ${
+        noScroll ? 'h-[100dvh] overflow-hidden flex flex-col' : 'min-h-screen'
+      }`}
     >
-      <div className="before" />
-      <div className="after" />
-      <nav className="bg-gray-800 shadow-lg">
+      {/* Navigation */}
+      <nav className="bg-gray-800 shadow-lg z-10 w-full">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <h1 className="text-xl font-bold">{title}</h1>
           <button
@@ -35,7 +67,15 @@ const GameLayout: React.FC<GameLayoutProps> = ({
           </button>
         </div>
       </nav>
-      <main className="container mx-auto px-4 py-8">{children}</main>
+
+      {/* Main Content */}
+      <main
+        className={`container mx-auto px-4 py-8 flex-1 ${
+          noScroll ? 'flex items-center justify-center' : ''
+        }`}
+      >
+        {children}
+      </main>
     </div>
   )
 }
