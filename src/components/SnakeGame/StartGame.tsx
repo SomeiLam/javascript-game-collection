@@ -13,7 +13,7 @@ const StartGame: React.FC<StartGameProps> = ({ handleStartGame }) => {
   const handleSetDifficulty = (level: Difficulty) => setDifficulty(level)
 
   return (
-    <div className="flex justify-center items-center flex-col p-4">
+    <div className="flex justify-center items-center flex-col p-4 overflow-auto">
       <h2 className="text-2xl font-bold mb-4">Snake Game</h2>
       <p className="text-gray-400">
         Guide the snake to eat food and grow longer 🐍

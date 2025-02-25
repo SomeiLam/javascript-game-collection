@@ -19,7 +19,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
 
   return (
     <div
-      className={`${fullViewHeight ? 'h-screen w-screen overflow-hidden' : 'min-h-screen'} bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+      className={`${fullViewHeight ? 'h-[700px] overflow-hidden sm:min-h-screen' : 'min-h-screen'} bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
     >
       <div className="before" />
       <div className="after" />
