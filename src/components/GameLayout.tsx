@@ -17,7 +17,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
 
   return (
     <div
-      className={`min-h-screen bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+      className={`h-full bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
     >
       <div className="before" />
       <div className="after" />
