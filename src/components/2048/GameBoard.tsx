@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Tile } from './Tile'
 import { RotateCcw, Undo } from 'lucide-react'
 import StartButton from '../StartButton'
+import { updateHighScore } from '../../helper'
 
 interface MoveResult {
   board: number[][]
@@ -11,6 +12,7 @@ interface MoveResult {
 interface GameBoardProps {
   size: 4 | 5 | 6
   restartGame: () => void
+  setGameHighScore: (isHighest: boolean) => void
 }
 
 interface TouchPosition {
@@ -18,7 +20,11 @@ interface TouchPosition {
   y: number
 }
 
-const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
+const GameBoard: React.FC<GameBoardProps> = ({
+  size,
+  restartGame,
+  setGameHighScore,
+}) => {
   const [board, setBoard] = useState<number[][]>(createEmptyBoard(size))
   const [score, setScore] = useState(0)
   const [prevBoard, setPrevBoard] = useState<number[][] | null>(null)
@@ -40,6 +46,17 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
     setBoard(newBoard)
   }, [size])
 
+  // Helper: Handle game over logic
+  const handleGameOver = useCallback(
+    (finalScore: number) => {
+      const isHighest = updateHighScore('2048', finalScore) === finalScore
+      if (isHighest) setGameHighScore(true)
+
+      setGameOver(true)
+    },
+    [setGameHighScore]
+  )
+  console.log('render')
   // Keydown listener – note we add it only once and use boardRef for current state
   useEffect(() => {
     setGameOver(false)
@@ -68,16 +85,17 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
         setPrevScore(score)
         // Update board and score
         addRandomTile(moveResult.board)
+        const finalScore = score + moveResult.score
         setBoard(moveResult.board)
-        setScore(score + moveResult.score)
+        setScore(finalScore)
         if (checkGameOver(moveResult.board)) {
-          setGameOver(true)
+          handleGameOver(finalScore)
         }
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [score])
+  }, [handleGameOver, score])
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -117,10 +135,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
         setPrevBoard(boardRef.current.map((row) => [...row]))
         setPrevScore(score)
         addRandomTile(moveResult.board)
+        const finalScore = score + moveResult.score
         setBoard(moveResult.board)
-        setScore(score + moveResult.score)
+        setScore(finalScore)
         if (checkGameOver(moveResult.board)) {
-          alert('Game Over!')
+          handleGameOver(finalScore)
         }
       }
     }
@@ -139,7 +158,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
 
   return (
     <div
-      className="flex flex-col gap-2 w-full justify-center items-center"
+      className="flex flex-col gap-2 w-full justify-center items-center fireworks"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -151,7 +170,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
           <StartButton handleStart={restartGame} label="Play Again" />
         </div>
       ) : (
-        <div className="flex gap-16 justify-center items-center mb-5">
+        <div className="flex w-full justify-between sm:gap-16 sm:justify-center items-center mb-5">
           <button
             onClick={handleUndo}
             disabled={!prevBoard}
@@ -159,7 +178,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
           >
             <Undo className="w-5 h-5" />
           </button>
-          <div className="text-2xl font-bold text-center text-white">
+          <div className="text-lg sm:text-2xl font-bold text-center text-white">
             Score: {score}
           </div>
 
@@ -171,13 +190,25 @@ const GameBoard: React.FC<GameBoardProps> = ({ size, restartGame }) => {
           </button>
         </div>
       )}
-      {board.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex gap-2">
-          {row.map((value, colIndex) => (
-            <Tile key={colIndex} value={value} />
-          ))}
-        </div>
-      ))}
+      <div
+        className="grid gap-2"
+        style={{
+          width: 'min(100%, 65vh)',
+          aspectRatio: '1 / 1',
+          gridTemplateColumns: `repeat(${size}, 1fr)`,
+          gridTemplateRows: `repeat(${size}, 1fr)`,
+        }}
+      >
+        {board.map((row, rowIndex) =>
+          row.map((value, colIndex) => (
+            <Tile
+              key={`${rowIndex}-${colIndex}`}
+              value={value}
+              boardSize={size}
+            />
+          ))
+        )}
+      </div>
     </div>
   )
 }

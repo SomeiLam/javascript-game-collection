@@ -1,20 +1,30 @@
-/* The base tile class: generic styling for every tile */
+/* Tile.css */
+
+/* Base styling for every tile */
 .tile {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  font-size: 1.5rem;
-  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #776e65;
-  /* fallback background if none of the tile-X classes apply */
-  background-color: #cdc1b4;
+  border-radius: 8px;
+  font-weight: bold;
   transition: all 0.2s ease-in-out;
+  background-color: #cdc1b4;
+  color: #776e65;
+
+  /* Let the tile fill its grid cell. 
+     aspect-ratio is handled by the container. */
+  width: 100%;
+  height: 100%;
 }
 
-/* Each value-based class can override the background (and sometimes text color) */
+/* Example fallback for very small screens */
+@media (max-width: 400px) {
+  .tile {
+    font-size: 1rem;
+  }
+}
+
+/* Value-based tile styling */
 .tile-2 {
   background-color: #eee4da;
   color: #776e65;
@@ -70,7 +80,6 @@
   color: #f9f6f2;
 }
 
-/* You can define higher tiles if you like, or just reuse .tile-default */
 .tile-default {
   background-color: #3c3a32;
   color: #f9f6f2;

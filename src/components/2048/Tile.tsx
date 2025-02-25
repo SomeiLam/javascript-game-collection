@@ -1,12 +1,27 @@
+// Tile.tsx
+import React from 'react'
 import './Tile.css'
 
 interface TileProps {
   value: number
+  boardSize?: number // e.g. 4, 5, or 6
 }
 
-const Tile: React.FC<TileProps> = ({ value }) => {
+export const Tile: React.FC<TileProps> = ({ value, boardSize }) => {
+  // Dynamically adjust the font size based on board size
+  let fontSize = '1.5rem'
+  if (boardSize === 5) {
+    fontSize = '1.3rem'
+  } else if (boardSize === 6) {
+    fontSize = '1.1rem'
+  }
+
   const tileStyle = getTileStyle(value)
-  return <div className={`tile ${tileStyle}`}>{value !== 0 ? value : ''}</div>
+  return (
+    <div className={`tile ${tileStyle}`} style={{ fontSize }}>
+      {value !== 0 ? value : ''}
+    </div>
+  )
 }
 
 const getTileStyle = (value: number): string => {
@@ -37,5 +52,3 @@ const getTileStyle = (value: number): string => {
       return 'tile-default'
   }
 }
-
-export { Tile }
