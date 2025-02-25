@@ -6,18 +6,20 @@ interface GameLayoutProps {
   children: React.ReactNode
   title: string
   gameFinished?: boolean
+  noScroll?: boolean
 }
 
 const GameLayout: React.FC<GameLayoutProps> = ({
   children,
   title,
   gameFinished,
+  noScroll,
 }) => {
   const navigate = useNavigate()
 
   return (
     <div
-      className={`h-full bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+      className={`${noScroll ? 'overflow-hidden' : ''} h-full bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
     >
       <div className="before" />
       <div className="after" />

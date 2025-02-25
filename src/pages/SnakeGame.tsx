@@ -263,7 +263,7 @@ function SnakeGame() {
   }, [difficulty])
 
   return (
-    <GameLayout title="Snake Game">
+    <GameLayout title="Snake Game" noScroll={gameStarted}>
       <div className="max-w-4xl mx-auto">
         <div
           className={`bg-gray-800 rounded-lg py-4 sm:p-8 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
@@ -283,7 +283,7 @@ function SnakeGame() {
                 </h5>
               </div>
 
-              <div className="relative h-3/4 sm:h-full">
+              <div className={`${gameOver ? 'relative' : ''}`}>
                 <GameBoard
                   boardSize={boardSize}
                   snake={snake}
