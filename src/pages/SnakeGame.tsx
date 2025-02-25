@@ -3,7 +3,7 @@ import GameLayout from '../components/GameLayout'
 import StartGame from '../components/SnakeGame/StartGame'
 import { Difficulty } from '../type'
 import GameBoard from '../components/SnakeGame/GameBoard'
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
+// import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
 import StartButton from '../components/StartButton'
 
 const useScreenSize = () => {
@@ -263,7 +263,7 @@ function SnakeGame() {
   }, [difficulty])
 
   return (
-    <GameLayout title="Snake Game" fullViewHeight>
+    <GameLayout title="Snake Game">
       <div className="max-w-4xl mx-auto">
         <div
           className={`bg-gray-800 rounded-lg py-4 sm:p-8 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
@@ -283,7 +283,7 @@ function SnakeGame() {
                 </h5>
               </div>
 
-              <div className="relative">
+              <div className="relative h-3/4 sm:h-full">
                 <GameBoard
                   boardSize={boardSize}
                   snake={snake}
@@ -307,9 +307,8 @@ function SnakeGame() {
                   </div>
                 )}
               </div>
-
               {/* Direction Buttons */}
-              <div className="flex flex-col sm:hidden items-center gap-2">
+              {/* <div className="flex flex-col sm:hidden items-center gap-2">
                 <button
                   onClick={() => (directionRef.current = { x: 0, y: -1 })}
                   className="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-150 hover:shadow-indigo-500/25"
@@ -336,7 +335,7 @@ function SnakeGame() {
                     <ArrowRight className="w-8 h-8" />
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
