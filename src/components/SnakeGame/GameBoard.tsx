@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 interface Position {
   x: number
   y: number
@@ -101,4 +103,4 @@ const GameBoard: React.FC<GameBoardProps> = ({
   )
 }
 
-export default GameBoard
+export default memo(GameBoard)
