@@ -19,9 +19,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
   poisonFood,
   direction,
 }) => {
-  // Get the snake head
-  const snakeHead = snake[0]
-
   // Determine rotation based on direction
   const getRotation = () => {
     if (direction.x === 1) return '-rotate-90' // Right
@@ -36,48 +33,70 @@ const GameBoard: React.FC<GameBoardProps> = ({
         display: 'grid',
         gridTemplateColumns: `repeat(${boardSize.cols}, 1fr)`,
         gridTemplateRows: `repeat(${boardSize.rows}, 1fr)`,
+        position: 'relative',
       }}
-      className={`gap-[1px] bg-gray-900 ${boardSize.width} ${boardSize.height}`}
+      className={`relative bg-gray-900 ${boardSize.width} ${boardSize.height}`}
     >
-      {[...Array(boardSize.rows)].map((_, y) =>
-        [...Array(boardSize.cols)].map((_, x) => {
-          const isSnake = snake.some(
-            (segment) => segment.x === x && segment.y === y
-          )
-          const isSnakeHead = snakeHead.x === x && snakeHead.y === y
-          const isFood = food.x === x && food.y === y
-          const isPoison = poisonFood.some((p) => p.x === x && p.y === y)
+      {/* Snake Body */}
+      {snake.map((segment, index) => (
+        <div
+          key={index}
+          style={{
+            position: 'absolute',
+            top: `${(segment.y / boardSize.rows) * 100}%`,
+            left: `${(segment.x / boardSize.cols) * 100}%`,
+            width: `${100 / boardSize.cols}%`,
+            height: `${100 / boardSize.rows}%`,
+            transition: 'top 100ms linear, left 100ms linear',
+          }}
+          className={index === 0 ? 'z-10' : 'z-0'}
+        >
+          {index === 0 ? (
+            <img
+              src="snake/head.png"
+              alt="snake-head"
+              className={`w-full h-full object-contain scale-150 ${getRotation()}`}
+            />
+          ) : (
+            <div className="w-full h-full bg-[#76a32e] rounded-lg"></div>
+          )}
+        </div>
+      ))}
 
-          return (
-            <div
-              key={`${x}-${y}`}
-              className={`w-full h-full ${
-                isSnakeHead
-                  ? 'scale-150 z-10'
-                  : isSnake
-                    ? 'bg-[#76a32e] rounded-full scale-125 z-0'
-                    : 'bg-gray-900'
-              }`}
-            >
-              {isSnakeHead ? (
-                <img
-                  src="snake/head.png"
-                  alt="snake-head"
-                  className={`w-full h-full object-contain relative ${getRotation()}`}
-                />
-              ) : isFood ? (
-                <img
-                  src={`fruits/${food.type}.png`}
-                  alt="food"
-                  className="!scale-150"
-                />
-              ) : isPoison ? (
-                <img src="fruits/poison.png" alt="poison-food" />
-              ) : null}
-            </div>
-          )
-        })
-      )}
+      {/* Food */}
+      <div
+        style={{
+          position: 'absolute',
+          top: `${(food.y / boardSize.rows) * 100}%`,
+          left: `${(food.x / boardSize.cols) * 100}%`,
+          width: `${100 / boardSize.cols}%`,
+          height: `${100 / boardSize.rows}%`,
+        }}
+      >
+        <img
+          src={`fruits/${food.type}.png`}
+          alt="food"
+          key={`${food.x}-${food.y}-${food.type}`}
+          className="scale-125 fade-grow w-full h-full"
+        />
+      </div>
+
+      {/* Poison Food */}
+      {poisonFood.map((p, index) => (
+        <div
+          key={index}
+          style={{
+            position: 'absolute',
+            top: `${(p.y / boardSize.rows) * 100}%`,
+            left: `${(p.x / boardSize.cols) * 100}%`,
+            width: `${100 / boardSize.cols}%`,
+            height: `${100 / boardSize.rows}%`,
+            transition: 'top 100ms linear, left 100ms linear',
+          }}
+        >
+          <img src="fruits/poison.png" alt="poison-food" />
+        </div>
+      ))}
     </div>
   )
 }
