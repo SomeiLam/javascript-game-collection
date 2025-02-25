@@ -6,18 +6,20 @@ interface GameLayoutProps {
   children: React.ReactNode
   title: string
   gameFinished?: boolean
+  fullViewHeight?: boolean
 }
 
 const GameLayout: React.FC<GameLayoutProps> = ({
   children,
   title,
   gameFinished,
+  fullViewHeight,
 }) => {
   const navigate = useNavigate()
 
   return (
     <div
-      className={`min-h-screen bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
+      className={`${fullViewHeight ? 'h-screen w-screen overflow-hidden' : 'min-h-screen'} bg-gray-900 text-white ${gameFinished ? 'pyro' : ''}`}
     >
       <div className="before" />
       <div className="after" />

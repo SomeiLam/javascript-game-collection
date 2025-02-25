@@ -263,7 +263,7 @@ function SnakeGame() {
   }, [difficulty])
 
   return (
-    <GameLayout title="Snake Game">
+    <GameLayout title="Snake Game" fullViewHeight>
       <div className="max-w-4xl mx-auto">
         <div
           className={`bg-gray-800 rounded-lg py-4 sm:p-8 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
