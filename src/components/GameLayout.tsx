@@ -74,7 +74,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
         className={`container mx-auto px-4 py-8 flex-grow ${
           noScroll ? 'overflow-hidden' : 'overflow-auto'
         }`}
-        style={{ height: noScroll ? 'calc(100dvh - 56px)' : 'h-full' }}
+        style={{ height: noScroll ? 'calc(100dvh - 64px)' : 'h-full' }}
       >
         {children}
       </main>
