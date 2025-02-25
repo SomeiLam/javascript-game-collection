@@ -50,12 +50,12 @@ const GameLayout: React.FC<GameLayoutProps> = ({
 
   return (
     <div
-      className={`bg-gray-900 text-white ${gameFinished ? 'pyro' : ''} ${
-        noScroll ? 'h-[100dvh] overflow-hidden flex flex-col' : 'min-h-screen'
-      }`}
+      className={`bg-gray-900 text-white flex flex-col ${
+        noScroll ? 'h-[100dvh] overflow-hidden' : 'min-h-screen'
+      }${gameFinished ? 'pyro' : ''}`}
     >
-      {/* Navigation */}
-      <nav className="bg-gray-800 shadow-lg z-10 w-full">
+      {/* Navigation Bar */}
+      <nav className="bg-gray-800 shadow-lg w-full flex-none">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <h1 className="text-xl font-bold">{title}</h1>
           <button
@@ -68,10 +68,12 @@ const GameLayout: React.FC<GameLayoutProps> = ({
         </div>
       </nav>
 
-      {/* Main Content */}
+      {/* Main Content Adjusted */}
       <main
-        className={`container mx-auto px-4 py-8 flex-1 ${
-          noScroll ? 'flex items-center justify-center' : ''
+        className={`container mx-auto px-4 flex-1 ${
+          noScroll
+            ? 'overflow-hidden flex items-center justify-center pt-24 pb-8'
+            : 'py-8'
         }`}
       >
         {children}
