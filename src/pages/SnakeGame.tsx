@@ -3,7 +3,6 @@ import GameLayout from '../components/GameLayout'
 import StartGame from '../components/SnakeGame/StartGame'
 import { Difficulty } from '../type'
 import GameBoard from '../components/SnakeGame/GameBoard'
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
 import StartButton from '../components/StartButton'
 import { getHighScore, updateHighScore } from '../helper'
 
@@ -20,12 +19,8 @@ const useScreenSize = () => {
         height: window.innerHeight,
       })
     }
-
     window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return screenSize
@@ -38,57 +33,50 @@ interface Position {
 }
 
 const INITIAL_DIRECTION = { x: 0, y: -1 } // Moving up
-
 const FOOD_TYPES = ['coconut', 'grapes', 'lemon', 'mango', 'melon', 'orange']
 
 function SnakeGame() {
   const screenSize = useScreenSize()
-  const boardSize =
-    screenSize.width >= 1024
-      ? {
-          cols: 40,
-          rows: 20,
-          width: 'w-[800px]',
-          height: 'h-[400px]',
-          initialSnake: [{ x: 20, y: 10 }],
-        }
-      : screenSize.width >= 768
-        ? {
-            cols: 30,
-            rows: 30,
-            width: 'w-[600px]',
-            height: 'h-[600px]',
-            initialSnake: [{ x: 15, y: 20 }],
-          }
-        : {
-            cols: 20,
-            rows: 20,
-            width: 'w-[300px]',
-            height: 'h-[300px]',
-            initialSnake: [{ x: 10, y: 15 }],
-          }
+  // Constants
+  const NAVBAR_HEIGHT = 64
+  const EXTRA_MARGIN = 20 // Reserved padding/margin
+  const EXTRA_HEIGHT_REDUCTION = 40 // Extra reduction to avoid overflow
+  const boardContainerHeight =
+    screenSize.height - NAVBAR_HEIGHT - EXTRA_MARGIN - EXTRA_HEIGHT_REDUCTION
+  const boardContainerWidth = screenSize.width - EXTRA_MARGIN
+
+  // Pick grid sizes as before (40×20, 30×30, 20×20) depending on screen width
+  let boardGrid: { cols: number; rows: number; initialSnake: Position[] }
+  if (screenSize.width >= 1024) {
+    boardGrid = { cols: 40, rows: 20, initialSnake: [{ x: 20, y: 10 }] }
+  } else if (screenSize.width >= 768) {
+    boardGrid = { cols: 30, rows: 30, initialSnake: [{ x: 15, y: 20 }] }
+  } else {
+    boardGrid = { cols: 20, rows: 20, initialSnake: [{ x: 10, y: 15 }] }
+  }
+
   const [difficulty, setDifficulty] = useState<Difficulty>('medium')
   const [speed, setSpeed] = useState(200)
   const [gameStarted, setGameStarted] = useState(false)
-  const [snake, setSnake] = useState(boardSize.initialSnake)
-  const [food, setFood] = useState(generateFood(snake, []))
-  const [score, setScore] = useState(0) // Tracks food eaten
-  const [poisonFood, setPoisonFood] = useState<Position[]>([]) // Stores poison food positions
-  const [nextPoisonSpawn, setNextPoisonSpawn] = useState(30) // Next score threshold for poison
+  const [snake, setSnake] = useState(boardGrid.initialSnake)
+  const [food, setFood] = useState(generateFood(boardGrid.initialSnake, []))
+  const [score, setScore] = useState(0)
+  const [poisonFood, setPoisonFood] = useState<Position[]>([])
+  const [nextPoisonSpawn, setNextPoisonSpawn] = useState(30)
   const directionRef = useRef(INITIAL_DIRECTION)
   const highest = getHighScore('Snake')
-  const [newRecord, setNewRecore] = useState(false)
-
+  const [newRecord, setNewRecord] = useState(false)
   const [gameOver, setGameOver] = useState(false)
 
   const handleFinishGame = () => {
     if (score > highest) {
       updateHighScore('Snake', score)
-      setNewRecore(true)
+      setNewRecord(true)
     }
     setGameOver(true)
   }
 
+  // Keyboard controls
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.key) {
@@ -117,50 +105,45 @@ function SnakeGame() {
   const handleStartGame = (difficulty: Difficulty) => {
     setDifficulty(difficulty)
     setGameStarted(true)
-    setSnake(boardSize.initialSnake)
+    setSnake(boardGrid.initialSnake)
     directionRef.current = { x: 0, y: -1 }
-    setFood(generateFood(snake, []))
-    handleFinishGame()
+    setFood(generateFood(boardGrid.initialSnake, []))
     setScore(0)
     setPoisonFood([])
-    setNewRecore(false)
+    setNewRecord(false)
     setGameOver(false)
   }
 
   function generateFood(snake: Position[], poisonFood: Position[]) {
     let newFood: Position
-
     do {
       newFood = {
-        x: Math.floor(Math.random() * boardSize.cols),
-        y: Math.floor(Math.random() * boardSize.rows),
+        x: Math.floor(Math.random() * boardGrid.cols),
+        y: Math.floor(Math.random() * boardGrid.rows),
         type: FOOD_TYPES[Math.floor(Math.random() * FOOD_TYPES.length)],
       }
     } while (
       snake.some(
         (segment) => segment.x === newFood.x && segment.y === newFood.y
-      ) || // Avoid snake
-      poisonFood.some((p) => p.x === newFood.x && p.y === newFood.y) // Avoid poison
+      ) ||
+      poisonFood.some((p) => p.x === newFood.x && p.y === newFood.y)
     )
-
     return newFood
   }
 
   function generatePoisonFood() {
     const newPoison = {
-      x: Math.floor(Math.random() * boardSize.cols),
-      y: Math.floor(Math.random() * boardSize.rows),
+      x: Math.floor(Math.random() * boardGrid.cols),
+      y: Math.floor(Math.random() * boardGrid.rows),
     }
-
-    // Prevent spawning poison on snake or existing food
     if (
       !snake.some(
         (segment) => segment.x === newPoison.x && segment.y === newPoison.y
       ) &&
-      !poisonFood.some((p) => p.x === newPoison.x && p.y === newPoison.y) && // Prevent duplicate poisons
+      !poisonFood.some((p) => p.x === newPoison.x && p.y === newPoison.y) &&
       (food.x !== newPoison.x || food.y !== newPoison.y)
     ) {
-      setPoisonFood((prev) => [...prev, newPoison]) // Accumulate poison food
+      setPoisonFood((prev) => [...prev, newPoison])
     } else {
       generatePoisonFood()
     }
@@ -184,22 +167,19 @@ function SnakeGame() {
     if (head.x === food.x && head.y === food.y) {
       setScore((prev) => {
         const newScore = prev + 1
-
-        // Check if poison should be generated
-        if (score >= nextPoisonSpawn && difficulty !== 'easy') {
-          generatePoisonFood() // Add another poison food
-          setNextPoisonSpawn(score + 10) // Schedule next poison generation
+        if (newScore >= nextPoisonSpawn && difficulty !== 'easy') {
+          generatePoisonFood()
+          setNextPoisonSpawn(newScore + 10)
         }
-
         return newScore
       })
-
-      setFood(generateFood(snake, poisonFood)) // Generate new food
+      setFood(generateFood(snake, poisonFood))
     } else {
+      // If not eaten, remove the tail
       newSnake.pop()
     }
 
-    // Check if poison food is eaten (Game Over)
+    // Check if poison is eaten
     if (poisonFood.some((p) => p.x === head.x && p.y === head.y)) {
       handleFinishGame()
       return
@@ -212,17 +192,15 @@ function SnakeGame() {
     const hitWall =
       head.x < 0 ||
       head.y < 0 ||
-      head.x >= boardSize.cols ||
-      head.y >= boardSize.rows
+      head.x >= boardGrid.cols ||
+      head.y >= boardGrid.rows
     const hitSelf = snake.some(
       (segment) => segment.x === head.x && segment.y === head.y
     )
-
-    if (hitWall || hitSelf) return true
-
-    return false
+    return hitWall || hitSelf
   }
 
+  // Touch-swipe for mobile
   useEffect(() => {
     let startX = 0,
       startY = 0
@@ -231,7 +209,6 @@ function SnakeGame() {
       startX = e.touches[0].clientX
       startY = e.touches[0].clientY
     }
-
     const handleTouchEnd = (e: TouchEvent) => {
       const endX = e.changedTouches[0].clientX
       const endY = e.changedTouches[0].clientY
@@ -253,25 +230,24 @@ function SnakeGame() {
 
     window.addEventListener('touchstart', handleTouchStart)
     window.addEventListener('touchend', handleTouchEnd)
-
     return () => {
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchend', handleTouchEnd)
     }
   }, [])
 
+  // Game loop
   useEffect(() => {
     if (gameOver) return
-
     const gameLoop = setInterval(() => moveSnake(), speed)
-
     return () => clearInterval(gameLoop)
   }, [snake, gameOver, speed])
 
+  // Difficulty changes => speed & poison spawn
   useEffect(() => {
-    if (difficulty === 'easy') setSpeed(200) // Normal speed
-    if (difficulty === 'medium') setSpeed(150) // Faster
-    if (difficulty === 'hard') setSpeed(100) // Even faster
+    if (difficulty === 'easy') setSpeed(200)
+    if (difficulty === 'medium') setSpeed(150)
+    if (difficulty === 'hard') setSpeed(100)
     setNextPoisonSpawn(difficulty === 'hard' ? 20 : 30)
   }, [difficulty])
 
@@ -281,85 +257,67 @@ function SnakeGame() {
       noScroll={gameStarted}
       gameFinished={newRecord}
     >
-      <div className="max-w-4xl mx-auto">
-        <div
-          className={`bg-gray-800 rounded-lg px-8 py-4 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
-        >
-          {!gameStarted ? (
-            <StartGame handleStartGame={handleStartGame} />
-          ) : (
-            <div className="flex flex-col items-center gap-5">
-              <div className="flex flex-row items-center gap-5">
-                <h5 className="text-lg flex flex-row gap-1 items-center">
-                  <img
-                    src="/fruits/orange.png"
-                    alt="score"
-                    className="w-5 h-5"
-                  />
-                  {score}
-                </h5>
-              </div>
-
-              <div className={`${gameOver ? 'relative' : ''}`}>
-                <GameBoard
-                  boardSize={boardSize}
-                  snake={snake}
-                  food={food}
-                  poisonFood={poisonFood}
-                  direction={{
-                    x: directionRef.current.x,
-                    y: directionRef.current.y,
-                  }}
-                />
-                {gameOver && (
-                  <div className="absolute z-20 inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-75 gap-4">
-                    <h1 className="text-3xl font-bold text-white">
-                      {newRecord ? 'New record!' : 'GAME OVER'}
-                    </h1>
-                    <StartButton
-                      handleStart={() => {
-                        setGameStarted(false)
-                        setGameOver(false)
-                        setNewRecore(false)
-                      }}
-                      label="Restart"
-                    />
-                  </div>
-                )}
-              </div>
-              {/* Direction Buttons */}
-              <div className="flex flex-col sm:hidden items-center gap-2">
-                <button
-                  onClick={() => (directionRef.current = { x: 0, y: -1 })}
-                  className="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-150 hover:shadow-indigo-500/25"
-                >
-                  <ArrowUp className="w-8 h-8" />
-                </button>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => (directionRef.current = { x: -1, y: 0 })}
-                    className="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-150 hover:shadow-indigo-500/25"
-                  >
-                    <ArrowLeft className="w-8 h-8" />
-                  </button>
-                  <button
-                    onClick={() => (directionRef.current = { x: 0, y: 1 })}
-                    className="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-150 hover:shadow-indigo-500/25"
-                  >
-                    <ArrowDown className="w-8 h-8" />
-                  </button>
-                  <button
-                    onClick={() => (directionRef.current = { x: 1, y: 0 })}
-                    className="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-150 hover:shadow-indigo-500/25"
-                  >
-                    <ArrowRight className="w-8 h-8" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+      {!gameStarted ? (
+        <div className="bg-gray-800 rounded-lg p-4 sm:p-8 border-effect green-emerald max-w-4xl mx-auto">
+          <StartGame handleStartGame={handleStartGame} />
         </div>
-      </div>
+      ) : (
+        <div
+          className="w-full flex justify-center items-center"
+          style={{ height: boardContainerHeight }}
+        >
+          <div
+            className="relative bg-gray-800 rounded-lg"
+            style={{ width: boardContainerWidth, height: boardContainerHeight }}
+          >
+            {/* Top Right Restart Button */}
+            {!gameOver && gameStarted && (
+              <button
+                onClick={() => {
+                  setGameStarted(false)
+                  setGameOver(false)
+                  setNewRecord(false)
+                }}
+                className="absolute top-4 right-4 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+              >
+                Restart
+              </button>
+            )}
+
+            <div className="relative h-full">
+              <GameBoard
+                boardSize={boardGrid}
+                snake={snake}
+                food={food}
+                poisonFood={poisonFood}
+                direction={{
+                  x: directionRef.current.x,
+                  y: directionRef.current.y,
+                }}
+                containerStyle={{
+                  width: boardContainerWidth,
+                  height: boardContainerHeight,
+                }}
+              />
+              {gameOver && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-60 bg-gray-500 bg-opacity-25 p-6 rounded-3xl flex flex-col items-center gap-4">
+                  <h1 className="text-2xl font-bold text-white">
+                    {newRecord ? 'New record!' : 'GAME OVER'}
+                  </h1>
+                  <StartButton
+                    handleStart={() => {
+                      setGameStarted(false)
+                      setGameOver(false)
+                      setNewRecord(false)
+                    }}
+                    label="Restart"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </GameLayout>
   )
 }

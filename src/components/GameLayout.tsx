@@ -28,19 +28,22 @@ const GameLayout: React.FC<GameLayoutProps> = ({
       document.body.style.overflow = 'auto'
     }
   }, [noScroll])
-  console.log('gameFinished', gameFinished)
+
   return (
     <div
-      className={`min-h-screen bg-gray-900 text-white ${
-        gameFinished ? 'pyro' : ''
-      }`}
+      className="min-h-screen bg-gray-900 text-white"
       style={{
         height: noScroll ? '100dvh' : '100%',
         overflow: noScroll ? 'hidden' : 'auto',
       }} // Ensure full height
     >
-      <div className="before"></div>
-      <div className="after"></div>
+      {gameFinished && (
+        <div className="pyro">
+          <div className="before"></div>
+          <div className="after"></div>
+        </div>
+      )}
+
       {/* Navigation Bar */}
       <nav className="bg-gray-800 shadow-lg w-full flex-none">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">

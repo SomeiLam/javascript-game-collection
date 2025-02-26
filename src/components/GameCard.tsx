@@ -39,10 +39,8 @@ const GameCard: React.FC<GameCardProps> = ({
           <button className="mt-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-300">
             Play Now
           </button>
-          {title === 'Snake Game' && (
-            <p>Highest: {getHighScore('Snake') || 0}</p>
-          )}
-          {title === '2048' && <p>Highest: {getHighScore('2048') || 0}</p>}
+          {title === 'Snake Game' && <p>🎯 {getHighScore('Snake') || 0}</p>}
+          {title === '2048' && <p>🎯 {getHighScore('2048') || 0}</p>}
         </div>
       </div>
     </div>
