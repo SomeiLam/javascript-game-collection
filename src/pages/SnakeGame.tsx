@@ -250,7 +250,7 @@ function SnakeGame() {
     if (difficulty === 'hard') setSpeed(100)
     setNextPoisonSpawn(difficulty === 'hard' ? 20 : 30)
   }, [difficulty])
-
+  console.log('boardContainerWidth', boardContainerWidth)
   return (
     <GameLayout
       title="Snake Game"
@@ -267,54 +267,38 @@ function SnakeGame() {
           style={{ height: boardContainerHeight }}
         >
           <div
-            className="relative bg-gray-800 rounded-lg"
+            className="h-full bg-gray-800 rounded-lg"
             style={{ width: boardContainerWidth, height: boardContainerHeight }}
           >
-            {/* Top Right Restart Button */}
-            {!gameOver && gameStarted && (
-              <button
-                onClick={() => {
-                  setGameStarted(false)
-                  setGameOver(false)
-                  setNewRecord(false)
-                }}
-                className="absolute top-4 right-4 z-50 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-              >
-                Restart
-              </button>
+            <GameBoard
+              boardSize={boardGrid}
+              snake={snake}
+              food={food}
+              poisonFood={poisonFood}
+              direction={{
+                x: directionRef.current.x,
+                y: directionRef.current.y,
+              }}
+              containerStyle={{
+                width: boardContainerWidth,
+                height: boardContainerHeight,
+              }}
+            />
+            {gameOver && (
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-60 bg-gray-500 bg-opacity-25 p-6 rounded-3xl flex flex-col items-center gap-4">
+                <h1 className="text-2xl font-bold text-white">
+                  {newRecord ? 'New record!' : 'GAME OVER'}
+                </h1>
+                <StartButton
+                  handleStart={() => {
+                    setGameStarted(false)
+                    setGameOver(false)
+                    setNewRecord(false)
+                  }}
+                  label="Restart"
+                />
+              </div>
             )}
-
-            <div className="relative h-full">
-              <GameBoard
-                boardSize={boardGrid}
-                snake={snake}
-                food={food}
-                poisonFood={poisonFood}
-                direction={{
-                  x: directionRef.current.x,
-                  y: directionRef.current.y,
-                }}
-                containerStyle={{
-                  width: boardContainerWidth,
-                  height: boardContainerHeight,
-                }}
-              />
-              {gameOver && (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-60 bg-gray-500 bg-opacity-25 p-6 rounded-3xl flex flex-col items-center gap-4">
-                  <h1 className="text-2xl font-bold text-white">
-                    {newRecord ? 'New record!' : 'GAME OVER'}
-                  </h1>
-                  <StartButton
-                    handleStart={() => {
-                      setGameStarted(false)
-                      setGameOver(false)
-                      setNewRecord(false)
-                    }}
-                    label="Restart"
-                  />
-                </div>
-              )}
-            </div>
           </div>
         </div>
       )}

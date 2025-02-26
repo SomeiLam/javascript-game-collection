@@ -1,4 +1,4 @@
-// GameBoard.tsx
+// GameBoard.tsx (Reverted to fill the container in both dimensions)
 import { memo, CSSProperties } from 'react'
 
 interface Position {
@@ -10,7 +10,7 @@ interface Position {
 interface BoardSize {
   cols: number
   rows: number
-  initialSnake?: Position[] // optional
+  initialSnake?: Position[]
 }
 
 interface GameBoardProps {
@@ -19,7 +19,7 @@ interface GameBoardProps {
   food: Position
   poisonFood: Position[]
   direction: Position
-  // containerStyle has numeric width & height from SnakeGame
+  // containerStyle from SnakeGame
   containerStyle: { width: number; height: number }
 }
 
@@ -31,10 +31,16 @@ const GameBoard: React.FC<GameBoardProps> = ({
   direction,
   containerStyle,
 }) => {
-  // Each tile is a square => cellSize = min(px per column, px per row)
+  // Remove the "square cell" logic; fill entire container
   const colWidth = containerStyle.width / boardSize.cols
   const rowHeight = containerStyle.height / boardSize.rows
-  const cellSize = Math.min(colWidth, rowHeight)
+
+  const boardStyle: CSSProperties = {
+    position: 'relative',
+    width: containerStyle.width,
+    height: containerStyle.height,
+    overflow: 'hidden',
+  }
 
   const getRotation = () => {
     if (direction.x === 1) return '-rotate-90' // Right
@@ -43,24 +49,15 @@ const GameBoard: React.FC<GameBoardProps> = ({
     return '' // Down
   }
 
-  // Board container fills the old "full" space
-  // but tiles may not fully fill one dimension if aspect ratios differ
-  const boardContainerStyle: CSSProperties = {
-    position: 'relative',
-    width: containerStyle.width,
-    height: containerStyle.height,
-    overflow: 'hidden', // so tiles don't overflow
-  }
-
   return (
     <div
-      style={boardContainerStyle}
-      className="relative bg-gray-900 border-4 border-yellow-500 rounded-lg"
+      style={boardStyle}
+      className="relative bg-gray-900 border-4 border-yellow-500"
     >
       {/* Snake segments */}
       {snake.map((segment, index) => {
-        const topPx = segment.y * cellSize
-        const leftPx = segment.x * cellSize
+        const topPx = segment.y * rowHeight
+        const leftPx = segment.x * colWidth
 
         return (
           <div
@@ -69,8 +66,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
               position: 'absolute',
               top: topPx,
               left: leftPx,
-              width: cellSize,
-              height: cellSize,
+              width: colWidth,
+              height: rowHeight,
               transition: 'top 100ms linear, left 100ms linear',
             }}
             className={index === 0 ? 'z-10' : 'z-0'}
@@ -82,7 +79,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 className={`w-full h-full object-contain scale-150 ${getRotation()}`}
               />
             ) : (
-              <div className="w-full h-full bg-[#76a32e] rounded-lg"></div>
+              <div className="w-full h-full bg-[#76a32e]" />
             )}
           </div>
         )
@@ -92,10 +89,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
       <div
         style={{
           position: 'absolute',
-          top: food.y * cellSize,
-          left: food.x * cellSize,
-          width: cellSize,
-          height: cellSize,
+          top: food.y * rowHeight,
+          left: food.x * colWidth,
+          width: colWidth,
+          height: rowHeight,
         }}
       >
         <img
@@ -111,10 +108,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
           key={index}
           style={{
             position: 'absolute',
-            top: p.y * cellSize,
-            left: p.x * cellSize,
-            width: cellSize,
-            height: cellSize,
+            top: p.y * rowHeight,
+            left: p.x * colWidth,
+            width: colWidth,
+            height: rowHeight,
             transition: 'top 100ms linear, left 100ms linear',
           }}
         >
