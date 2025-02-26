@@ -13,7 +13,7 @@ const SelectDifficulty: React.FC<SelectDifficultyProps> = ({
   type,
 }) => {
   return (
-    <div className="grid grid-cols-3 gap-4 my-5">
+    <div className="flex flex-row gap-4 my-5">
       <button
         onClick={() => handleSetDifficulty('easy')}
         className={`group relative bg-gradient-to-br from-green-400 to-green-600 ${difficulty === 'easy' ? 'shadow-[0_0_40px_rgba(34,197,94,0.7)] cursor-default' : ' hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] active:scale-[0.98]'} p-[2px] rounded-xl overflow-hidden transition-all`}
@@ -31,7 +31,7 @@ const SelectDifficulty: React.FC<SelectDifficultyProps> = ({
               ? 'Easy'
               : type === 'speed'
                 ? 'Slow'
-                : type === 'size' && '6 x 6'}
+                : type === 'size' && '5 x 5'}
           </span>
         </div>
       </button>
@@ -52,31 +52,29 @@ const SelectDifficulty: React.FC<SelectDifficultyProps> = ({
               ? 'Medium'
               : type === 'speed'
                 ? 'Medium'
-                : type === 'size' && '5 x 5'}
+                : type === 'size' && 'Classic'}
           </span>
         </div>
       </button>
-      <button
-        onClick={() => handleSetDifficulty('hard')}
-        className={`group relative bg-gradient-to-br from-red-400 to-red-600 p-[2px] ${difficulty === 'hard' ? 'shadow-[0_0_20px_rgba(239,68,68,0.7)] cursor-default' : ' hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] active:scale-[0.98]'} rounded-xl overflow-hidden transition-all`}
-      >
-        <div
-          className={`${difficulty === 'hard' ? 'bg-red-800' : 'bg-gray-800 group-hover:bg-gray-800/95'} min-w-[80px] rounded-[10px] p-3 flex flex-col items-center gap-2`}
+      {type !== 'size' && (
+        <button
+          onClick={() => handleSetDifficulty('hard')}
+          className={`group relative bg-gradient-to-br from-red-400 to-red-600 p-[2px] ${difficulty === 'hard' ? 'shadow-[0_0_20px_rgba(239,68,68,0.7)] cursor-default' : ' hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] active:scale-[0.98]'} rounded-xl overflow-hidden transition-all`}
         >
-          {type === 'level' || type === 'size' ? (
-            <Skull className="w-6 h-6 text-red-400" />
-          ) : (
-            type === 'speed' && <Rabbit className="w-6 h-6 text-red-400" />
-          )}
-          <span className="font-semibold text-red-400">
-            {type === 'level'
-              ? 'Hard'
-              : type === 'speed'
-                ? 'Fast'
-                : type === 'size' && '4 x 4'}
-          </span>
-        </div>
-      </button>
+          <div
+            className={`${difficulty === 'hard' ? 'bg-red-800' : 'bg-gray-800 group-hover:bg-gray-800/95'} min-w-[80px] rounded-[10px] p-3 flex flex-col items-center gap-2`}
+          >
+            {type === 'level' ? (
+              <Skull className="w-6 h-6 text-red-400" />
+            ) : (
+              type === 'speed' && <Rabbit className="w-6 h-6 text-red-400" />
+            )}
+            <span className="font-semibold text-red-400">
+              {type === 'level' ? 'Hard' : type === 'speed' && 'Fast'}
+            </span>
+          </div>
+        </button>
+      )}
     </div>
   )
 }

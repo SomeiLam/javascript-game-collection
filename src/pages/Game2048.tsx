@@ -28,8 +28,11 @@ const Game2048 = () => {
             <StartGame handleStartGame={handleStartGame} />
           ) : (
             <GameBoard
-              size={difficulty === 'easy' ? 6 : difficulty === 'medium' ? 5 : 4}
-              restartGame={() => setGameStarted(false)}
+              size={difficulty === 'easy' ? 5 : 4}
+              restartGame={() => {
+                setGameHighScore(false)
+                setGameStarted(false)
+              }}
               setGameHighScore={setGameHighScore}
             />
           )}

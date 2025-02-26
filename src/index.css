@@ -187,6 +187,14 @@
   }
 }
 
+.pyro {
+  position: relative; /* or absolute/fixed if you want the fireworks to cover the whole screen */
+  width: 100%;
+  height: 100%;
+  /* Possibly a large z-index so the fireworks appear on top */
+  z-index: 9999;
+}
+
 .pyro > .before,
 .pyro > .after {
   position: absolute;

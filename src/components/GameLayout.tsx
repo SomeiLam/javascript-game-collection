@@ -28,14 +28,19 @@ const GameLayout: React.FC<GameLayoutProps> = ({
       document.body.style.overflow = 'auto'
     }
   }, [noScroll])
-
+  console.log('gameFinished', gameFinished)
   return (
     <div
-      className={`flex flex-col bg-gray-900 text-white ${
+      className={`min-h-screen bg-gray-900 text-white ${
         gameFinished ? 'pyro' : ''
       }`}
-      style={{ height: noScroll ? '100dvh' : '100%' }} // Ensure full height
+      style={{
+        height: noScroll ? '100dvh' : '100%',
+        overflow: noScroll ? 'hidden' : 'auto',
+      }} // Ensure full height
     >
+      <div className="before"></div>
+      <div className="after"></div>
       {/* Navigation Bar */}
       <nav className="bg-gray-800 shadow-lg w-full flex-none">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -52,7 +57,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
 
       {/* Main Content Adjusted */}
       <main
-        className={`container mx-auto px-4 py-8 flex-grow ${
+        className={`w-full mx-auto px-4 py-8 flex-grow ${
           noScroll ? 'overflow-hidden' : 'overflow-auto'
         }`}
         style={{ height: noScroll ? 'calc(100dvh - 64px)' : 'h-full' }}

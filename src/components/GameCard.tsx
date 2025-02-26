@@ -1,4 +1,5 @@
 import React from 'react'
+import { getHighScore } from '../helper'
 
 interface GameCardProps {
   title: string
@@ -27,14 +28,22 @@ const GameCard: React.FC<GameCardProps> = ({
         className={`absolute inset-0 bg-gradient-to-r ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
       />
 
-      <div className="relative z-10">
-        <div className="mb-4">{icon}</div>
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-gray-400">{description}</p>
+      <div className="relative z-10 flex flex-col justify-between h-full">
+        <div>
+          <div className="mb-4">{icon}</div>
+          <h3 className="text-xl font-semibold mb-2">{title}</h3>
+          <p className="text-gray-400">{description}</p>
+        </div>
 
-        <button className="mt-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-300">
-          Play Now
-        </button>
+        <div className="flex flex-row items-end justify-between">
+          <button className="mt-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-300">
+            Play Now
+          </button>
+          {title === 'Snake Game' && (
+            <p>Highest: {getHighScore('Snake') || 0}</p>
+          )}
+          {title === '2048' && <p>Highest: {getHighScore('2048') || 0}</p>}
+        </div>
       </div>
     </div>
   )

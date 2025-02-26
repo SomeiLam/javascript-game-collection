@@ -13,7 +13,7 @@ const StartGame: React.FC<StartGameProps> = ({ handleStartGame }) => {
   const handleSetDifficulty = (level: Difficulty) => setDifficulty(level)
 
   return (
-    <div className="flex justify-center items-center flex-col p-4 overflow-auto">
+    <div className="flex justify-center items-center flex-col p-4">
       <h2 className="text-2xl font-bold mb-4">Game 2048</h2>
       <p className="text-gray-400">
         A classic number puzzle game where you slide numbered tiles to combine
@@ -34,21 +34,11 @@ const StartGame: React.FC<StartGameProps> = ({ handleStartGame }) => {
           </li>
           <li>Game over if the board fills up and no moves are possible.</li>
         </ol>
+        <p>
+          💡 Tip: Try to keep your highest-numbered tile in one corner for
+          better control!
+        </p>
       </div>
-
-      <div className="flex flex-row items-center justify-start gap-2 py-5">
-        <p className="text-lg font-semibold">Tip:</p>
-        <span>
-          Try to keep your highest-numbered tile in one corner for better
-          control!
-        </span>
-      </div>
-      <div className="flex flex-col items-center justify-center gap-3 pt-5">
-        <p>🟩 6 × 6 – Ultimate challenge 🟩</p>
-        <p>🟨 5 × 5 – More space, longer game 🟨</p>
-        <p>🔴 4 × 4 (Classic) – Balanced gameplay 🔴</p>
-      </div>
-      <div className="flex flex-col justify-start gap-5 py-5"></div>
       <SelectDifficulty
         handleSetDifficulty={handleSetDifficulty}
         difficulty={difficulty}

@@ -5,6 +5,7 @@ import { Difficulty } from '../type'
 import GameBoard from '../components/SnakeGame/GameBoard'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react'
 import StartButton from '../components/StartButton'
+import { getHighScore, updateHighScore } from '../helper'
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState({
@@ -75,8 +76,18 @@ function SnakeGame() {
   const [poisonFood, setPoisonFood] = useState<Position[]>([]) // Stores poison food positions
   const [nextPoisonSpawn, setNextPoisonSpawn] = useState(30) // Next score threshold for poison
   const directionRef = useRef(INITIAL_DIRECTION)
+  const highest = getHighScore('Snake')
+  const [newRecord, setNewRecore] = useState(false)
 
   const [gameOver, setGameOver] = useState(false)
+
+  const handleFinishGame = () => {
+    if (score > highest) {
+      updateHighScore('Snake', score)
+      setNewRecore(true)
+    }
+    setGameOver(true)
+  }
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -109,9 +120,11 @@ function SnakeGame() {
     setSnake(boardSize.initialSnake)
     directionRef.current = { x: 0, y: -1 }
     setFood(generateFood(snake, []))
-    setGameOver(false)
+    handleFinishGame()
     setScore(0)
     setPoisonFood([])
+    setNewRecore(false)
+    setGameOver(false)
   }
 
   function generateFood(snake: Position[], poisonFood: Position[]) {
@@ -161,7 +174,7 @@ function SnakeGame() {
     }
 
     if (checkCollision(head)) {
-      setGameOver(true)
+      handleFinishGame()
       return
     }
 
@@ -188,7 +201,7 @@ function SnakeGame() {
 
     // Check if poison food is eaten (Game Over)
     if (poisonFood.some((p) => p.x === head.x && p.y === head.y)) {
-      setGameOver(true)
+      handleFinishGame()
       return
     }
 
@@ -263,7 +276,11 @@ function SnakeGame() {
   }, [difficulty])
 
   return (
-    <GameLayout title="Snake Game" noScroll={gameStarted}>
+    <GameLayout
+      title="Snake Game"
+      noScroll={gameStarted}
+      gameFinished={newRecord}
+    >
       <div className="max-w-4xl mx-auto">
         <div
           className={`bg-gray-800 rounded-lg px-8 py-4 ${!gameStarted ? 'border-effect green-emerald' : ''}`}
@@ -296,11 +313,14 @@ function SnakeGame() {
                 />
                 {gameOver && (
                   <div className="absolute z-20 inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-75 gap-4">
-                    <h1 className="text-4xl font-bold text-white">GAME OVER</h1>
+                    <h1 className="text-3xl font-bold text-white">
+                      {newRecord ? 'New record!' : 'GAME OVER'}
+                    </h1>
                     <StartButton
                       handleStart={() => {
                         setGameStarted(false)
                         setGameOver(false)
+                        setNewRecore(false)
                       }}
                       label="Restart"
                     />

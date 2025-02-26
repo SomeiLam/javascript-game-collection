@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Tile } from './Tile'
 import { RotateCcw, Undo } from 'lucide-react'
 import StartButton from '../StartButton'
-import { updateHighScore } from '../../helper'
+import { getHighScore, updateHighScore } from '../../helper'
 
 interface MoveResult {
   board: number[][]
@@ -10,7 +10,7 @@ interface MoveResult {
   moved: boolean
 }
 interface GameBoardProps {
-  size: 4 | 5 | 6
+  size: 4 | 5
   restartGame: () => void
   setGameHighScore: (isHighest: boolean) => void
 }
@@ -31,6 +31,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const [prevScore, setPrevScore] = useState<number | null>(null)
   const [touchStart, setTouchStart] = useState<TouchPosition | null>(null)
   const [gameOver, setGameOver] = useState(false)
+  const [highest, setHighest] = useState(false)
 
   // Use a ref to always have the latest board in the keydown handler
   const boardRef = useRef(board)
@@ -47,19 +48,19 @@ const GameBoard: React.FC<GameBoardProps> = ({
   }, [size])
 
   // Helper: Handle game over logic
-  const handleGameOver = useCallback(
-    (finalScore: number) => {
-      const isHighest = updateHighScore('2048', finalScore) === finalScore
-      if (isHighest) setGameHighScore(true)
+  const handleGameOver = (finalScore: number) => {
+    const isHighest = updateHighScore('2048', finalScore) === finalScore
+    if (isHighest) {
+      setGameHighScore(true)
+      setHighest(true)
+    } else {
+      setHighest(false)
+    }
+    setGameOver(true)
+  }
 
-      setGameOver(true)
-    },
-    [setGameHighScore]
-  )
-  console.log('render')
   // Keydown listener – note we add it only once and use boardRef for current state
   useEffect(() => {
-    setGameOver(false)
     const handleKeyDown = (e: KeyboardEvent) => {
       const currentBoard = boardRef.current
       let moveResult: MoveResult | undefined
@@ -95,7 +96,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleGameOver, score])
+  }, [score])
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -164,10 +165,18 @@ const GameBoard: React.FC<GameBoardProps> = ({
     >
       {gameOver ? (
         <div className="text-center mb-5">
-          <h2 className="text-2xl font-bold text-[#d652ed]">
-            You have no moves. Your score is {score}
+          <h2 className="text-lg font-bold text-[#d652ed]">
+            {highest
+              ? `Congratulations! You set a new high score of ${score}. You’ve beaten your old record!`
+              : `Game Over! Your final score is ${score}. Your highest score so far remains ${getHighScore('2048')}.`}
           </h2>
-          <StartButton handleStart={restartGame} label="Play Again" />
+          <StartButton
+            handleStart={() => {
+              restartGame()
+              setGameOver(false)
+            }}
+            label="Play Again"
+          />
         </div>
       ) : (
         <div className="flex w-full justify-between sm:gap-16 sm:justify-center items-center mb-5">
@@ -193,7 +202,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       <div
         className="grid gap-2"
         style={{
-          width: 'min(100%, 65vh)',
+          width: 'min(100%, 60vh)',
           aspectRatio: '1 / 1',
           gridTemplateColumns: `repeat(${size}, 1fr)`,
           gridTemplateRows: `repeat(${size}, 1fr)`,
