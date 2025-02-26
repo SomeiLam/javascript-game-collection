@@ -79,7 +79,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 className={`w-full h-full object-contain scale-150 ${getRotation()}`}
               />
             ) : (
-              <div className="w-full h-full bg-[#76a32e]" />
+              <div className="w-full h-full bg-[#76a32e] rounded-xl" />
             )}
           </div>
         )
