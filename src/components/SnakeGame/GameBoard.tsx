@@ -1,4 +1,3 @@
-// GameBoard.tsx (Reverted to fill the container in both dimensions)
 import { memo, CSSProperties } from 'react'
 
 interface Position {
@@ -32,13 +31,18 @@ const GameBoard: React.FC<GameBoardProps> = ({
   containerStyle,
 }) => {
   // Remove the "square cell" logic; fill entire container
-  const colWidth = containerStyle.width / boardSize.cols
-  const rowHeight = containerStyle.height / boardSize.rows
+  const cellSize = Math.min(
+    containerStyle.width / boardSize.cols,
+    containerStyle.height / boardSize.rows
+  )
+
+  const boardPixelWidth = cellSize * boardSize.cols
+  const boardPixelHeight = cellSize * boardSize.rows
 
   const boardStyle: CSSProperties = {
     position: 'relative',
-    width: containerStyle.width,
-    height: containerStyle.height,
+    width: boardPixelWidth,
+    height: boardPixelHeight,
     overflow: 'hidden',
   }
 
@@ -56,8 +60,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
     >
       {/* Snake segments */}
       {snake.map((segment, index) => {
-        const topPx = segment.y * rowHeight
-        const leftPx = segment.x * colWidth
+        const topPx = segment.y * cellSize
+        const leftPx = segment.x * cellSize
 
         return (
           <div
@@ -66,8 +70,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
               position: 'absolute',
               top: topPx,
               left: leftPx,
-              width: colWidth,
-              height: rowHeight,
+              width: cellSize,
+              height: cellSize,
               transition: 'top 100ms linear, left 100ms linear',
             }}
             className={index === 0 ? 'z-10' : 'z-0'}
@@ -89,10 +93,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
       <div
         style={{
           position: 'absolute',
-          top: food.y * rowHeight,
-          left: food.x * colWidth,
-          width: colWidth,
-          height: rowHeight,
+          top: food.y * cellSize,
+          left: food.x * cellSize,
+          width: cellSize,
+          height: cellSize,
         }}
       >
         <img
@@ -108,10 +112,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
           key={index}
           style={{
             position: 'absolute',
-            top: p.y * rowHeight,
-            left: p.x * colWidth,
-            width: colWidth,
-            height: rowHeight,
+            top: p.y * cellSize,
+            left: p.x * cellSize,
+            width: cellSize,
+            height: cellSize,
             transition: 'top 100ms linear, left 100ms linear',
           }}
         >
